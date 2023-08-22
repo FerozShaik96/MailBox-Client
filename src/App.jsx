@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import Sent from './pages/Sent';
+import Login from './pages/Login';
+import Trash from './pages/Trash';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Inbox from './pages/Inbox';
+import MainNavigation from './Components/MainNavigation';
+import SignUp from './pages/SignUp';
+import Forgot from './pages/Forgot';
+import AuthLogin from './pages/AuthLogin';
+import AuthProtect from './pages/AuthProtect';
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <MainNavigation />,
+      children: [
+        {
+          element: <AuthLogin />,
+          children: [
+            { index: true, element: <Inbox /> },
+            { path: 'sent', element: <Sent /> },
+            { path: 'trash', element: <Trash /> },
+          ],
+        },
+      ],
+    },
+    {
+      element: <AuthProtect />,
+      children: [
+        { path: 'login', element: <Login /> },
+        { path: 'forgot', element: <Forgot /> },
+        { path: 'signup', element: <SignUp /> },
+      ],
+    },
+  ]);
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;
