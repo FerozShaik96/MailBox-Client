@@ -7,6 +7,9 @@ export default {
         'dark-purple': '#081A51',
         'light-white': 'rgba(255,255,255,0.10)',
       },
+      backgroundImage: {
+        bgIMg: "url('/public/img4.jpg')",
+      },
     },
   },
   plugins: [],
