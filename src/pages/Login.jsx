@@ -29,12 +29,9 @@ function Login() {
         },
       );
       const response = await data;
-      console.log(response);
-      console.log(data);
       if (data.ok) {
         const res = await response.json();
-        console.log(res);
-        console.log(res.idToken);
+        localStorage.setItem('emailId', res.email);
         localStorage.setItem('LocalId', res.localId);
         localStorage.setItem('userid', res.idToken);
         navigate('/');
