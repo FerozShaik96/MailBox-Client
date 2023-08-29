@@ -34,6 +34,7 @@ function Compose() {
     const isDeleted = false;
     const data = {
       recipients,
+      EmailReplace,
       subject,
       description: editorState.getCurrentContent().getPlainText(),
       seen,
