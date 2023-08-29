@@ -7,15 +7,16 @@ import { TbTrash } from 'react-icons/tb';
 import { MdEdit } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 function NavSidebar() {
+  const [OpenCompose, setOpenCompose] = useState(false);
   const [open, setOpen] = useState(false);
   const openChangeHandler = () => {
     console.log('Hekllo');
     setOpen(() => !open);
   };
-
+  console.log(OpenCompose);
   return (
     <React.Fragment>
-      <div className="bg- flex border-r border-slate-900   backdrop-blur-sm ">
+      <div className="flex border-r border-slate-900 border-opacity-50   backdrop-blur-sm ">
         <div
           className={`relative min-h-screen  ${
             open ? 'w-52' : 'w-20'
@@ -37,24 +38,27 @@ function NavSidebar() {
             </div>
           </div>
           <ul className="mt-14">
-            <li className="mt-2 flex cursor-pointer items-center gap-x-4 rounded-full px-3  py-3 text-sm text-gray-300 hover:bg-light-white ">
-              <div>
+            <Link to="compose">
+              <li className="mt-2 flex cursor-pointer items-center gap-x-4 rounded-full px-3  py-3 text-sm text-gray-300 hover:bg-light-white ">
+                <div>
+                  <span
+                    onClick={() => setOpen(!open)}
+                    className={`float-left block ps-2 text-2xl`}
+                  >
+                    <MdEdit />
+                  </span>
+                </div>
                 <span
-                  onClick={() => setOpen(!open)}
-                  className={`float-left block ps-2 text-2xl`}
+                  className={`flex-1 text-base font-medium tracking-widest duration-200 ${
+                    !open && 'hidden'
+                  }`}
+                  onClick={() => setOpenCompose(!OpenCompose)}
                 >
-                  <MdEdit />
+                  Compose
                 </span>
-              </div>
-              <span
-                className={`flex-1 text-base font-medium tracking-widest duration-200 ${
-                  !open && 'hidden'
-                }`}
-              >
-                Compose
-              </span>
-            </li>
-            <Link to="/">
+              </li>
+            </Link>
+            <Link to="inbox">
               <li className="mt-2 flex cursor-pointer items-center gap-x-6 rounded-full p-3 text-sm text-gray-300 hover:bg-light-white">
                 <div>
                   <span
