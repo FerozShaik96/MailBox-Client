@@ -42,7 +42,7 @@ function Header() {
               <input
                 type="search"
                 placeholder="Search in mail"
-                className=" w-[28rem] bg-transparent ps-3  text-xl font-semibold text-white    "
+                className=" w-[28rem] bg-transparent ps-3  text-xl font-semibold text-white focus:outline-none"
               />
             </div>
           </div>
@@ -71,12 +71,12 @@ function Header() {
             {open && (
               <div
                 ref={menuref}
-                className="absolute right-5 top-16  w-52 rounded-xl bg-white p-4 shadow-lg"
+                className="absolute right-5 top-16  w-52 rounded-xl bg-gray-100   p-4 shadow-lg"
               >
                 <ul>
                   <li
                     onClick={() => setOpen(false)}
-                    className="mb-2  cursor-pointer rounded-xl p-2 ps-5 text-lg hover:bg-blue-100"
+                    className="mb-2 cursor-pointer rounded-xl  p-2 ps-5 text-lg hover:bg-blue-100"
                   >
                     profile
                   </li>
