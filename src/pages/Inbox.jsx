@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { RxBox, RxClock } from 'react-icons/rx';
+import { useSelector, useDispatch } from 'react-redux';
+import { InboxActions } from '../store/InboxReducer';
 import { Link } from 'react-router-dom';
 import { TiArrowSortedDown } from 'react-icons/ti';
 import { TbStar, TbRotate, TbDotsVertical, TbTrash } from 'react-icons/tb';
@@ -8,16 +10,20 @@ import { MdLabelImportantOutline, MdOutlineEmail } from 'react-icons/md';
 import { BiArchiveIn } from 'react-icons/bi';
 import { BsKeyboardFill } from 'react-icons/bs';
 function Inbox() {
-  const [reciverData, setReciveData] = useState([]);
+  // const [reciverData, setReciveData] = useState([]);
   const reciver = localStorage.getItem('emailId').split('@')[0];
+  const dispatch = useDispatch();
+  const inboxData = useSelector((state) => state.inboxReducer.inbox);
+  // console.log(inboxData);
   const fetchData = async () => {
     const inboxData = await fetch(
       `https://mail-box-client-1328c-default-rtdb.firebaseio.com/inbox/${reciver}.json`,
     );
-    const resData = await inboxData.json();
-    const loadedData = [];
-    for (const key in resData) {
-      if (!resData[key].isDeleted) {
+    if (inboxData.ok) {
+      const resData = await inboxData.json();
+      const loadedData = [];
+      for (const key in resData) {
+        // if (!resData[key].isDeleted) {
         loadedData.push({
           id: key,
           subject: resData[key].subject,
@@ -25,15 +31,17 @@ function Inbox() {
           isDeleted: resData[key].isDeleted,
           description: resData[key].description,
           recipitents: resData[key].recipients,
+          from: resData[key].EmailReplace,
         });
+        // }
       }
+      dispatch(InboxActions.updateData(loadedData));
     }
-    setReciveData(loadedData);
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [inboxData]);
   const trashHandler = async (item) => {
     console.log('Hello');
     console.log(item.id);
@@ -49,8 +57,11 @@ function Inbox() {
         },
       },
     );
-    const dataTrash = await trashData.json();
-    console.log(dataTrash);
+    if (trashData.ok) {
+      const dataTrash = await trashData.json();
+      dispatch(InboxActions.updateTrash(item.id));
+      console.log(dataTrash);
+    }
   };
   const InboxChangeHandler = async (item) => {
     const inboxChange = await fetch(
@@ -65,7 +76,10 @@ function Inbox() {
         },
       },
     );
-    const data = await inboxChange.json();
+    if (inboxChange) {
+      dispatch(InboxActions.updateSeen(item.id));
+      const data = await inboxChange.json();
+    }
   };
   return (
     <React.Fragment>
@@ -109,44 +123,47 @@ function Inbox() {
         </div>
       </div>
       <ul className="">
-        {reciverData &&
-          reciverData.map((item) => (
-            <li
-              key={item.id}
-              onClick={() => {
-                InboxChangeHandler(item);
-              }}
-            >
-              <Link
-                to={`${item.id}`}
-                className={` ${
-                  item.seen ? 'bg-zinc-400 bg-opacity-30' : ''
-                } group flex h-10 w-full items-center   border  border-gray-700 border-opacity-20  ps-8 text-gray-500 hover:text-gray-900 hover:shadow-md`}
+        {inboxData.map((item) => {
+          if (!item.isDeleted) {
+            return (
+              <li
+                key={item.id}
+                onClick={() => {
+                  InboxChangeHandler(item);
+                }}
               >
-                <div className=" flex w-1/6 items-center gap-x-4 text-lg">
-                  <RxBox className="" />
-                  <TbStar className="" />
-                  <MdLabelImportantOutline className="text-xl" />
-                </div>
-                <div className="ms-3 flex w-8/12 gap-x-2 text-gray-900 ">
-                  <p>{item.subject} -</p>
-                  <p>{item.description}</p>
-                </div>
+                <Link
+                  to={`${item.id}`}
+                  className={` ${
+                    item.seen ? 'bg-zinc-400 bg-opacity-30' : ''
+                  } group flex h-10 w-full items-center   border  border-gray-700 border-opacity-20  ps-8 text-gray-500 hover:text-gray-900 hover:shadow-md`}
+                >
+                  <div className=" flex w-1/6 items-center gap-x-4 text-lg">
+                    <RxBox className="" />
+                    <TbStar className="" />
+                    <MdLabelImportantOutline className="text-xl" />
+                  </div>
+                  <div className="ms-3 flex w-8/12 gap-x-2 text-gray-900 ">
+                    <p>{item.subject} -</p>
+                    <p>{item.description}</p>
+                  </div>
 
-                <button className=" invisible me-4 flex items-center gap-x-4 text-lg hover:text-gray-700  group-hover:visible">
-                  <BiArchiveIn />
-                  <TbTrash
-                    onClick={(event) => {
-                      event.preventDefault();
-                      trashHandler(item);
-                    }}
-                  />
-                  <MdOutlineEmail />
-                  <RxClock />
-                </button>
-              </Link>
-            </li>
-          ))}
+                  <button className=" invisible me-4 flex items-center gap-x-4 text-lg hover:text-gray-700  group-hover:visible">
+                    <BiArchiveIn />
+                    <TbTrash
+                      onClick={(event) => {
+                        event.preventDefault();
+                        trashHandler(item);
+                      }}
+                    />
+                    <MdOutlineEmail />
+                    <RxClock />
+                  </button>
+                </Link>
+              </li>
+            );
+          }
+        })}
       </ul>
     </React.Fragment>
   );
