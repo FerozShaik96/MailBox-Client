@@ -9,6 +9,10 @@ import SignUp from './pages/SignUp';
 import Forgot from './pages/Forgot';
 import AuthLogin from './pages/AuthLogin';
 import AuthProtect from './pages/AuthProtect';
+import Compose from './pages/Compose';
+import SentMessage from './pages/SentMessage';
+import TrashMessage from './pages/TrashMessage';
+import InboxMessage from './pages/InboxMessage';
 
 function App() {
   const router = createBrowserRouter([
@@ -19,9 +23,29 @@ function App() {
         {
           element: <AuthLogin />,
           children: [
-            { index: true, element: <Inbox /> },
-            { path: 'sent', element: <Sent /> },
-            { path: 'trash', element: <Trash /> },
+            {
+              path: 'inbox',
+              children: [
+                { index: true, element: <Inbox /> },
+                { path: ':id', element: <InboxMessage /> },
+              ],
+            },
+
+            {
+              path: 'sent',
+              children: [
+                { index: true, element: <Sent /> },
+                { path: ':id', element: <SentMessage /> },
+              ],
+            },
+            {
+              path: 'trash',
+              children: [
+                { index: true, element: <Trash /> },
+                { path: ':id', element: <TrashMessage /> },
+              ],
+            },
+            { path: 'compose', element: <Compose /> },
           ],
         },
       ],
