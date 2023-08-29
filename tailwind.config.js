@@ -8,7 +8,7 @@ export default {
         'light-white': 'rgba(255,255,255,0.10)',
       },
       backgroundImage: {
-        bgIMg: "url('/public/img4.jpg')",
+        bgIMg: "url('/img4.jpg')",
       },
     },
   },
