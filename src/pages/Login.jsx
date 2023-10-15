@@ -1,4 +1,6 @@
 import React, { useRef, useState } from 'react';
+// import { useDispatch } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoTriangleDown } from 'react-icons/go';
 import google from '../utilities/images.png';
@@ -7,7 +9,6 @@ function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const navigate = useNavigate();
-
   const submitHandler = async (event) => {
     event.preventDefault();
     const emailEntered = emailRef.current.value;
@@ -64,9 +65,9 @@ function Login() {
                 to continue to Gmail
               </h3>
               <div className="mb-2 flex flex-col">
-                <lable className="my-2 text-base font-semibold">
+                <label className="my-2 text-base font-semibold">
                   Email or Phone
-                </lable>
+                </label>
                 <input
                   type="email"
                   ref={emailRef}
@@ -77,9 +78,9 @@ function Login() {
                 />
               </div>
               <div className="flex flex-col">
-                <lable className="my-2 text-base font-semibold">
+                <label className="my-2 text-base font-semibold">
                   Enter your password
-                </lable>
+                </label>
                 <input
                   ref={passwordRef}
                   type="password"
