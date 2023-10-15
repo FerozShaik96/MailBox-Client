@@ -11,12 +11,13 @@ const InboxReducer = createSlice({
       state.inbox = action.payload;
     },
     updateSeen(state, action) {
+      console.log(state.inbox);
       state.inbox[action.payload].seen = true;
     },
-  },
-  updateTrash(state, action) {
-    state.inbox[action.payload].isDeleted = true;
+    updateTrash(state, action) {
+      state.inbox[action.payload].isDeleted = true;
+    },
   },
 });
-export const InboxActions = InboxReducer.actions;
+export const { updateData, updateSeen, updateTrash } = InboxReducer.actions;
 export default InboxReducer.reducer;
