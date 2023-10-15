@@ -6,10 +6,10 @@ const SendReducer = createSlice({
   name: 'SendBox',
   initialState,
   reducers: {
-    updateData(state, action) {
+    updateSendBox(state, action) {
       state.sendBox = action.payload;
     },
   },
 });
-export const SendActions = SendReducer.actions;
+export const { updateSendBox } = SendReducer.actions;
 export default SendReducer.reducer;
